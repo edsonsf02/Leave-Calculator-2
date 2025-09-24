@@ -33,13 +33,14 @@ function calculateAll() {
     let totalUnrounded = 0;
     let totalRounded = 0;
 
-    // Start building table
     let resultsHtml = `
       <h2>Results</h2>
       <table>
         <thead>
           <tr>
             <th>Period</th>
+            <th>Start Date</th>
+            <th>End Date</th>
             <th>Weeks & Days</th>
             <th>Unrounded Hours</th>
             <th>Rounded Hours</th>
@@ -49,17 +50,19 @@ function calculateAll() {
     `;
 
     for (let i = 1; i <= count; i++) {
-        const start = new Date(document.getElementById(`start${i}`).value);
-        const end = new Date(document.getElementById(`end${i}`).value);
+        const startInput = document.getElementById(`start${i}`).value;
+        const endInput = document.getElementById(`end${i}`).value;
+        const start = new Date(startInput);
+        const end = new Date(endInput);
         const eft = parseFloat(document.getElementById(`eft${i}`).value) || 0;
 
         if (!(start instanceof Date) || isNaN(start) || !(end instanceof Date) || isNaN(end)) {
-            resultsHtml += `<tr><td colspan="4">Period ${i}: Invalid dates</td></tr>`;
+            resultsHtml += `<tr><td colspan="6">Period ${i}: Invalid dates</td></tr>`;
             continue;
         }
 
         if (end < start) {
-            resultsHtml += `<tr><td colspan="4">Period ${i}: End date must be after start date</td></tr>`;
+            resultsHtml += `<tr><td colspan="6">Period ${i}: End date must be after start date</td></tr>`;
             continue;
         }
 
@@ -70,9 +73,15 @@ function calculateAll() {
         const rawHours = ((totalDays / 365) * TOTAL_ANNUAL_HOURS * eft);
         const roundedHours = roundToQuarterHour(rawHours);
 
+        // Format dates as DD-MM-YYYY
+        const startFormatted = startInput.split('-').reverse().join('-');
+        const endFormatted = endInput.split('-').reverse().join('-');
+
         resultsHtml += `
           <tr>
             <td>Period ${i}</td>
+            <td>${startFormatted}</td>
+            <td>${endFormatted}</td>
             <td>${weeks} week(s) & ${days} day(s)</td>
             <td>${rawHours.toFixed(2)}h</td>
             <td>${roundedHours.toFixed(2)}h</td>
@@ -83,12 +92,12 @@ function calculateAll() {
         totalRounded += roundedHours;
     }
 
-    // Grand total row
     resultsHtml += `
         </tbody>
         <tfoot>
           <tr>
-            <th colspan="2">Grand Total</th>
+            <th colspan="3">Grand Total</th>
+            <th></th>
             <th>${totalUnrounded.toFixed(2)}h</th>
             <th>${totalRounded.toFixed(2)}h</th>
           </tr>
