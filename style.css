@@ -1,3 +1,4 @@
+/* General body styling */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -6,16 +7,18 @@ body {
     color: #333;
 }
 
+/* Container for sidebar + main content */
 .container {
     display: flex;
     min-height: 100vh;
 }
 
+/* Sidebar styling */
 .sidebar {
     background: #1e90ff;
     color: white;
     padding: 20px;
-    width: 250px;
+    width: 280px;
 }
 
 .sidebar h2 {
@@ -26,6 +29,7 @@ body {
     padding-left: 20px;
 }
 
+/* Main content styling */
 .main-content {
     flex: 1;
     padding: 40px;
@@ -35,6 +39,7 @@ h1 {
     color: #1e90ff;
 }
 
+/* Buttons */
 button {
     margin-top: 20px;
     background: #1e90ff;
@@ -50,6 +55,7 @@ button:hover {
     background: #005bb5;
 }
 
+/* Each period card */
 .period {
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -58,9 +64,33 @@ button:hover {
     background: white;
 }
 
+/* Results table styling */
 #results {
     margin-top: 30px;
-    padding: 15px;
+}
+
+#results table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
     background: #eaf4ff;
     border-radius: 8px;
+    overflow: hidden;
+}
+
+#results th, #results td {
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    text-align: center;
+}
+
+#results th {
+    background-color: #1e90ff;
+    color: white;
+}
+
+#results tfoot th {
+    background-color: #005bb5;
+    color: white;
+    font-size: 16px;
 }
