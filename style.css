@@ -82,6 +82,7 @@ button:hover {
     border: 1px solid #ccc;
     padding: 8px 12px;
     text-align: center;
+    word-wrap: break-word; /* Ensure long content wraps */
 }
 
 #results th {
@@ -93,4 +94,10 @@ button:hover {
     background-color: #005bb5;
     color: white;
     font-size: 16px;
+}
+
+/* Optional: make table scrollable if too wide */
+#results table {
+    display: block;
+    overflow-x: auto;
 }
