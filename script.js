@@ -1,5 +1,9 @@
 const TOTAL_ANNUAL_HOURS = 175;
 
+function roundToQuarterHour(hours) {
+    return Math.round(hours * 4) / 4;
+}
+
 function createPeriodForm(i) {
     return `
         <div class="period">
@@ -22,7 +26,8 @@ document.getElementById("periods").addEventListener("change", function() {
 
 function calculateAll() {
     const count = parseInt(document.getElementById("periods").value);
-    let total = 0;
+    let totalUnrounded = 0;
+    let totalRounded = 0;
     let resultsHtml = "<h2>Results</h2>";
 
     for (let i = 1; i <= count; i++) {
@@ -43,13 +48,17 @@ function calculateAll() {
         const totalDays = Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1;
         const weeks = Math.floor(totalDays / 7);
         const days = totalDays % 7;
-        const hours = ((totalDays / 365) * TOTAL_ANNUAL_HOURS * eft);
 
-        resultsHtml += `<p>Period ${i}: ${weeks} week(s) and ${days} day(s) → ${hours.toFixed(2)} hours</p>`;
-        total += hours;
+        const rawHours = ((totalDays / 365) * TOTAL_ANNUAL_HOURS * eft);
+        const roundedHours = roundToQuarterHour(rawHours);
+
+        resultsHtml += `<p>Period ${i}: ${weeks} week(s) and ${days} day(s) → Unrounded: ${rawHours.toFixed(2)}h, Rounded: ${roundedHours.toFixed(2)}h</p>`;
+
+        totalUnrounded += rawHours;
+        totalRounded += roundedHours;
     }
 
-    resultsHtml += `<h3>Grand Total: ${total.toFixed(2)} hours</h3>`;
+    resultsHtml += `<h3>Grand Total: Unrounded ${totalUnrounded.toFixed(2)}h, Rounded ${totalRounded.toFixed(2)}h</h3>`;
     document.getElementById("results").innerHTML = resultsHtml;
 }
 
