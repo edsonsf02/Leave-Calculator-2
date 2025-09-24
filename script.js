@@ -30,8 +30,7 @@ document.getElementById("periods").addEventListener("change", function() {
 // Main calculation function
 function calculateAll() {
     const count = parseInt(document.getElementById("periods").value);
-    let totalUnrounded = 0;
-    let totalRounded = 0;
+    let totalRawHours = 0;  // sum of all unrounded hours
 
     let resultsHtml = `
       <h2>Results</h2>
@@ -88,18 +87,18 @@ function calculateAll() {
           </tr>
         `;
 
-        totalUnrounded += rawHours;
-        totalRounded += roundedHours;
+        totalRawHours += rawHours;
     }
+
+    const grandTotalRounded = roundToQuarterHour(totalRawHours);
 
     resultsHtml += `
         </tbody>
         <tfoot>
           <tr>
-            <th colspan="3">Grand Total</th>
-            <th></th>
-            <th>${totalUnrounded.toFixed(2)}h</th>
-            <th>${totalRounded.toFixed(2)}h</th>
+            <th colspan="4">Grand Total</th>
+            <th>${totalRawHours.toFixed(2)}h</th>
+            <th>${grandTotalRounded.toFixed(2)}h</th>
           </tr>
         </tfoot>
       </table>
