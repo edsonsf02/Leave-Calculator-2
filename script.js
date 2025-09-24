@@ -1,9 +1,11 @@
 const TOTAL_ANNUAL_HOURS = 175;
 
+// Function to round hours to nearest 0.25
 function roundToQuarterHour(hours) {
     return Math.round(hours * 4) / 4;
 }
 
+// Generate a single period input form
 function createPeriodForm(i) {
     return `
         <div class="period">
@@ -15,6 +17,7 @@ function createPeriodForm(i) {
     `;
 }
 
+// Dynamically generate period forms when dropdown changes
 document.getElementById("periods").addEventListener("change", function() {
     const count = parseInt(this.value);
     const container = document.getElementById("periods-container");
@@ -24,11 +27,26 @@ document.getElementById("periods").addEventListener("change", function() {
     }
 });
 
+// Main calculation function
 function calculateAll() {
     const count = parseInt(document.getElementById("periods").value);
     let totalUnrounded = 0;
     let totalRounded = 0;
-    let resultsHtml = "<h2>Results</h2>";
+
+    // Start building table
+    let resultsHtml = `
+      <h2>Results</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Period</th>
+            <th>Weeks & Days</th>
+            <th>Unrounded Hours</th>
+            <th>Rounded Hours</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
 
     for (let i = 1; i <= count; i++) {
         const start = new Date(document.getElementById(`start${i}`).value);
@@ -36,12 +54,12 @@ function calculateAll() {
         const eft = parseFloat(document.getElementById(`eft${i}`).value) || 0;
 
         if (!(start instanceof Date) || isNaN(start) || !(end instanceof Date) || isNaN(end)) {
-            resultsHtml += `<p>Period ${i}: Invalid dates</p>`;
+            resultsHtml += `<tr><td colspan="4">Period ${i}: Invalid dates</td></tr>`;
             continue;
         }
 
         if (end < start) {
-            resultsHtml += `<p>Period ${i}: End date must be after start date</p>`;
+            resultsHtml += `<tr><td colspan="4">Period ${i}: End date must be after start date</td></tr>`;
             continue;
         }
 
@@ -52,15 +70,34 @@ function calculateAll() {
         const rawHours = ((totalDays / 365) * TOTAL_ANNUAL_HOURS * eft);
         const roundedHours = roundToQuarterHour(rawHours);
 
-        resultsHtml += `<p>Period ${i}: ${weeks} week(s) and ${days} day(s) → Unrounded: ${rawHours.toFixed(2)}h, Rounded: ${roundedHours.toFixed(2)}h</p>`;
+        resultsHtml += `
+          <tr>
+            <td>Period ${i}</td>
+            <td>${weeks} week(s) & ${days} day(s)</td>
+            <td>${rawHours.toFixed(2)}h</td>
+            <td>${roundedHours.toFixed(2)}h</td>
+          </tr>
+        `;
 
         totalUnrounded += rawHours;
         totalRounded += roundedHours;
     }
 
-    resultsHtml += `<h3>Grand Total: Unrounded ${totalUnrounded.toFixed(2)}h, Rounded ${totalRounded.toFixed(2)}h</h3>`;
+    // Grand total row
+    resultsHtml += `
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="2">Grand Total</th>
+            <th>${totalUnrounded.toFixed(2)}h</th>
+            <th>${totalRounded.toFixed(2)}h</th>
+          </tr>
+        </tfoot>
+      </table>
+    `;
+
     document.getElementById("results").innerHTML = resultsHtml;
 }
 
-// Trigger default form for 1 period
+// Trigger default form for 1 period on page load
 document.getElementById("periods").dispatchEvent(new Event("change"));
