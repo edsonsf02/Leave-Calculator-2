@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leave Allowance Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>How to Use</h2>
+            <p>This calculator helps you work out your leave allowance based on EFT and selected periods.</p>
+            <ul>
+                <li>Select how many periods you want to calculate.</li>
+                <li>For each period, enter a start date, end date, and EFT value (0–1).</li>
+                <li>Click <strong>Calculate</strong> to see the results.</li>
+                <li>Each period shows weeks, days, and hours, plus a grand total at the bottom.</li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <h1>Leave Allowance Calculator</h1>
+
+            <label for="periods">How many periods?</label>
+            <select id="periods">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+
+            <div id="periods-container"></div>
+
+            <button onclick="calculateAll()">Calculate</button>
+
+            <div id="results"></div>
+        </main>
+    </div>
+</body>
+</html>
